@@ -1,0 +1,39 @@
+{
+    "name": "server-for-resizing-or-cropping-images",
+    "version": "1.0.0",
+    "description": "Node.js server for resizing or cropping images, which also store operations history.",
+    "main": "./src/server/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node ./src/server/index.js"
+    },
+    "author": "Viktoria Grechukha",
+    "license": "ISC",
+    "dependencies": {
+        "@hapi/joi": "17.1.1",
+        "compression": "1.7.4",
+        "connect-flash": "0.1.1",
+        "cookie-parser": "1.4.5",
+        "cors": "2.8.5",
+        "dotenv": "8.2.0",
+        "editorconfig": "0.15.3",
+        "express": "4.17.1",
+        "express-session": "1.17.1",
+        "gm": "1.23.1",
+        "helmet": "4.1.1",
+        "jsonwebtoken": "8.5.1",
+        "mongoose": "5.10.9",
+        "multer": "1.4.2"
+    },
+    "devDependencies": {
+        "cz-conventional-changelog": "3.3.0",
+        "eslint": "7.9.0",
+        "eslint-config-airbnb-base": "14.2.0",
+        "eslint-plugin-import": "2.22.0"
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/cz-conventional-changelog"
+        }
+    }
+}
