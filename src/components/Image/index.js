@@ -1,5 +1,6 @@
 const ImageService = require('./service');
 const ImageValidation = require('./validation');
+const ImageError = require('../../error/ImageError');
 const ValidationError = require('../../error/ValidationError');
 
 /**
@@ -48,6 +49,10 @@ async function history(req, res, next) {
  */
 async function resizeImage(req, res, next) {
     try {
+        if (req.err || !req.file) {
+            throw new ImageError(req.err);
+        }
+
         const { error } = await ImageValidation.image(req.body);
 
         if (error) {
@@ -75,6 +80,13 @@ async function resizeImage(req, res, next) {
             });
         }
 
+        if (error instanceof ImageError) {
+            return res.status(400).json({
+                error: error.name,
+                details: req.err || 'Unable to process file.',
+            });
+        }
+
         res.status(500).json({
             message: error.name,
             details: error.message,
@@ -93,6 +105,10 @@ async function resizeImage(req, res, next) {
  */
 async function cropImage(req, res, next) {
     try {
+        if (req.err || !req.file) {
+            throw new ImageError(req.err);
+        }
+
         const { error } = await ImageValidation.image(req.body);
 
         if (error) {
@@ -117,6 +133,13 @@ async function cropImage(req, res, next) {
             return res.status(422).json({
                 error: error.name,
                 details: error.message,
+            });
+        }
+
+        if (error instanceof ImageError) {
+            return res.status(400).json({
+                error: error.name,
+                details: req.err || 'Unable to process file.',
             });
         }
 
