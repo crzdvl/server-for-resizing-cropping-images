@@ -16,9 +16,11 @@ class ImageValidation extends Validation {
       .object({
         width: this.Joi
           .string()
+          .min(1)
           .required(),
         height: this.Joi
           .string()
+          .min(1)
           .required(),
       })
       .validate(data);
