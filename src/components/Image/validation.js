@@ -15,11 +15,11 @@ class ImageValidation extends Validation {
     return this.Joi
       .object({
         width: this.Joi
-          .string()
+          .number()
           .min(1)
           .required(),
         height: this.Joi
-          .string()
+          .number()
           .min(1)
           .required(),
       })
