@@ -19,9 +19,9 @@ async function history(req, res, next) {
 
         const { dateStart, dateFinish } = req.body;
 
-        const history = await ImageService.getHistory(dateStart, dateFinish);
+        const data = await ImageService.getHistory(dateStart, dateFinish);
 
-        return res.status(200).json(history)
+        return res.status(200).json(data);
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -54,8 +54,7 @@ async function resizeImage(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        if (!req.file)
-            throw new Error('Something went wrong, ooops.. . Try again!');
+        if (!req.file) throw new Error('Something went wrong, ooops.. . Try again!');
 
         const { width, height } = req.body;
         const { filename, path } = req.file;
@@ -64,9 +63,9 @@ async function resizeImage(req, res, next) {
         await ImageService.create(filename, 'resize');
 
         return res.status(200).sendFile(
-            process.cwd()
-            + '/store/changedImages/'
-            + filename
+            `${process.cwd()
+             }/store/changedImages/${
+             filename}`,
         );
     } catch (error) {
         if (error instanceof ValidationError) {
@@ -84,7 +83,6 @@ async function resizeImage(req, res, next) {
         return next(error);
     }
 }
-
 
 /**
  * @function cropImage
@@ -101,8 +99,7 @@ async function cropImage(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        if (!req.file)
-            throw new Error('Something went wrong, ooops.. . Try again!');
+        if (!req.file) throw new Error('Something went wrong, ooops.. . Try again!');
 
         const { width, height } = req.body;
         const { filename, path } = req.file;
@@ -111,9 +108,9 @@ async function cropImage(req, res, next) {
         await ImageService.create(filename, 'crop');
 
         return res.status(200).sendFile(
-            process.cwd()
-            + '/store/changedImages/'
-            + filename
+            `${process.cwd()
+             }/store/changedImages/${
+             filename}`,
         );
     } catch (error) {
         if (error instanceof ValidationError) {
@@ -132,9 +129,8 @@ async function cropImage(req, res, next) {
     }
 }
 
-
 module.exports = {
     resizeImage,
     cropImage,
-    history
+    history,
 };

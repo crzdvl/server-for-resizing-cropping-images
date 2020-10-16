@@ -22,7 +22,7 @@ module.exports = {
         );
         app.use(bodyParser.json());
         // middleware for handling multipart/form-data
-        app.use(multer({ storage: storageConfig }).single("image"));
+        app.use(multer({ storage: storageConfig }).single('image'));
         // connect static file
         app.use(express.static('public'));
         // parse Cookie header and populate req.cookies with an object keyed by the cookie names.

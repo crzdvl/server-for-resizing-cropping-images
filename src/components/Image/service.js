@@ -1,5 +1,5 @@
-const ImageModel = require('./model');
 const gm = require('gm');
+const ImageModel = require('./model');
 
 /**
  * @method getHistory
@@ -8,18 +8,18 @@ const gm = require('gm');
  */
 function getHistory(dateStart, dateFinish) {
     return ImageModel.find({
-        "time":
+        time:
         {
-            $gte: new Date(new Date(dateStart).setHours(00, 00, 00)),
-            $lt: new Date(new Date(dateFinish).setHours(23, 59, 59))
-        }
-    })
+            $gte: new Date(new Date(dateStart).setHours(0, 0, 0)),
+            $lt: new Date(new Date(dateFinish).setHours(23, 59, 59)),
+        },
+    });
 }
 
 /**
  * @exports
  * @method create
- * @param {image, operation} 
+ * @param {image, operation}
  * @returns {Promise<ImageModel>}
  */
 function create(image, operation) {
@@ -35,16 +35,15 @@ function resize(width, height, filename, path) {
     return new Promise((resolve, reject) => {
         gm(path)
             .resize(width, height)
-            .write('store/changedImages/' + filename, (err) => {
+            .write(`store/changedImages/${filename}`, (err) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve()
+                    resolve();
                 }
             });
     });
 }
-
 
 /**
  * @method resize
@@ -56,11 +55,11 @@ function crop(width, height, filename, path) {
         gm(path)
             .gravity('Center')
             .crop(width, height)
-            .write('store/changedImages/' + filename, (err) => {
+            .write(`store/changedImages/${filename}`, (err) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve()
+                    resolve();
                 }
             });
     });

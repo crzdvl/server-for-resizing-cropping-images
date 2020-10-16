@@ -41,12 +41,12 @@ function onListening() {
  * @param {number} port
  */
 function bind(Server, port) {
-    Server.on('error', error => this.onError(error, port));
+    Server.on('error', (error) => this.onError(error, port));
     Server.on('listening', this.onListening.bind(Server));
 }
 
 module.exports = {
     onError,
     onListening,
-    bind
+    bind,
 };

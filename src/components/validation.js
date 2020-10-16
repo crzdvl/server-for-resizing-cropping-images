@@ -20,19 +20,19 @@ class Validation {
         this.Joi = Joi.extend({
             type: 'objectId',
             messages: {
-                'objectId.base': this.messageObjectId
+                'objectId.base': this.messageObjectId,
             },
             validate(value, helpers) {
                 if (typeof value !== 'number') {
                     return {
                         value,
-                        errors: helpers.error('objectId.base')
+                        errors: helpers.error('objectId.base'),
                     };
                 }
                 return {
-                    value
+                    value,
                 }; // Keep the value as it was
-            }
+            },
         });
     }
 }
