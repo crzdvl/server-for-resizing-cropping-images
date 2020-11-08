@@ -1,9 +1,11 @@
 const cors = require('cors');
 const helmet = require('helmet');
 const express = require('express');
+const passport = require('passport');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const multer = require('multer');
 const storageConfig = require('./image-storage-config');
 
@@ -15,6 +17,9 @@ module.exports = {
      * @returns void
      */
     init(app) {
+        // eslint-disable-next-line global-require
+        require('dotenv').config();
+        // configure .env
         app.use(
             bodyParser.urlencoded({
                 extended: true,
@@ -44,6 +49,17 @@ module.exports = {
         // can be used to enable CORS with various options
         app.use(cors());
         // cors
+        app.use(session({
+            secret: process.env.SECRET_CODE,
+            resave: false,
+            saveUninitialized: true,
+            cookie: { secure: false },
+        }));
+        app.use(passport.initialize());
+        app.use(passport.session());
+        require('./passport-strategies/passport-config')(passport);
+        require('./passport-strategies/passport-02Auth')(passport);
+        // conf
         app.use((req, res, next) => {
             res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS ');
             res.header('Access-Control-Allow-Credentials', '*');

@@ -1,5 +1,7 @@
 const express = require('express');
 const http = require('http');
+
+const AuthRouter = require('../components/Auth/router');
 const ImageRouter = require('../components/Image/router');
 
 module.exports = {
@@ -11,6 +13,16 @@ module.exports = {
      */
     init(app) {
         const router = express.Router();
+
+        /**
+         * Forwards any requests to the /v1/image URI to ImageRouter.
+         * @name /v1/auth
+         * @function
+         * @inner
+         * @param {string} path - Express path
+         * @param {callback} middleware - Express middleware.
+         */
+        app.use('/v1/auth', AuthRouter);
 
         /**
          * Forwards any requests to the /v1/image URI to ImageRouter.
