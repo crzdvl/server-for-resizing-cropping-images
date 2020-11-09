@@ -4,16 +4,6 @@ const AuthComponent = require('.');
 
 const isAuth = require('../../polices/isAuth');
 
-passport.serializeUser((user, cb) => {
-    console.log('passport.serialize');
-
-    cb(null, user);
-});
-
-passport.deserializeUser((obj, cb) => {
-    cb(null, obj);
-});
-
 /**
  * Express router to mount books related functions on.
  * @type {Express.Router}
