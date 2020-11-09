@@ -59,6 +59,7 @@ module.exports = {
         app.use(passport.session());
         require('./passport-strategies/passport-config')(passport);
         require('./passport-strategies/passport-02Auth')(passport);
+        require('./passport-strategies/passport-facebook')(passport);
         // conf
         app.use((req, res, next) => {
             res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS ');

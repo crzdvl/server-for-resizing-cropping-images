@@ -3,20 +3,25 @@ const connections = require('../../config/connection');
 
 const AuthSchema = new Schema(
     {
-        name: {
+        firstName: {
+            type: String,
+            required: true,
+        },
+        secondName: {
             type: String,
             required: true,
         },
         email: {
             type: String,
-            required: true,
         },
         password: {
             type: String,
         },
-        googleId: {
-            type: String,
-            default: 0,
+        google: {
+            googleId: {
+                type: String,
+                default: 0,
+            },
         },
     },
     {

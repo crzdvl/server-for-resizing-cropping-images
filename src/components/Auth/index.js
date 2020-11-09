@@ -48,7 +48,7 @@ async function signup(req, res, next) {
  */
 async function login(req, res, next) {
     try {
-        return passport.authenticate('local', { name: req.body.email, password: req.body.password }, (err, user) => {
+        return passport.authenticate('local', { email: req.body.email, password: req.body.password }, (err, user) => {
             if (err) return next(err);
             if (user) {
                 return req.logIn(user, (error) => {
@@ -92,36 +92,7 @@ async function logout(req, res, next) {
 }
 
 /**
- * @function loginPassport
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
-async function loginGoogle(req, res, next) {
-    try {
-        return passport.authenticate('google', { scope: ['email', 'profile'] }, (err, user) => {
-            if (err) return next(err);
-
-            if (user) {
-                return res.status(200).json('You logged up succesfully with Google.');
-            }
-            if (!user) {
-                return res.status(200).json('You have not logged up with Google.');
-            }
-        })(req, res, next);
-    } catch (error) {
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
-
-        return next(error);
-    }
-}
-
-/**
- * @function loginPassport
+ * @function googleCallback
  * @param {express.Request} req
  * @param {express.Response} res
  * @param {express.NextFunction} next
@@ -129,37 +100,14 @@ async function loginGoogle(req, res, next) {
  */
 async function googleCallback(req, res, next) {
     try {
-        return passport.authenticate('google', {
-            successRedirect: '/auth/good',
-            failureRedirect: '/auth/bad',
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
+        return passport.authenticate('google', (err) => {
+            if (err) {
+                return next(err);
+            }
 
-        return next(error);
-    }
-}
-
-async function good(req, res, next) {
-    try {
-        return res.status(200).json('good');
-    } catch (error) {
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
-
-        return next(error);
-    }
-}
-
-async function bad(req, res, next) {
-    try {
-        return res.status(200).json('bad');
-    } catch (error) {
+            return res.status(200).json('You logined up succesfully with Google.');
+        })(req, res, next);
+        } catch (error) {
         res.status(500).json({
             message: error.name,
             details: error.message,
@@ -173,8 +121,5 @@ module.exports = {
     signup,
     login,
     logout,
-    loginGoogle,
     googleCallback,
-    good,
-    bad,
 };

@@ -1,7 +1,18 @@
 const { Router } = require('express');
+const passport = require('passport');
 const AuthComponent = require('.');
 
 const isAuth = require('../../polices/isAuth');
+
+passport.serializeUser((user, cb) => {
+    console.log('passport.serialize');
+
+    cb(null, user);
+});
+
+passport.deserializeUser((obj, cb) => {
+    cb(null, obj);
+});
 
 /**
  * Express router to mount books related functions on.
@@ -42,13 +53,13 @@ router.get('/logout', isAuth.checkAuthenticated, AuthComponent.logout);
 
 /**
  * Route for login with google.
- * @name /auth/google
+ * @name /v1/auth/google
  * @function
  * @inner
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.get('/google', AuthComponent.loginGoogle);
+router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 /**
  *
@@ -59,25 +70,5 @@ router.get('/google', AuthComponent.loginGoogle);
  * @param {callback} middleware - Express middleware
  */
 router.get('/google/callback', AuthComponent.googleCallback);
-
-/**
- *
- * @name /v1/auth/google/callback
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware
- */
-router.get('/good', AuthComponent.good);
-
-/**
- *
- * @name /v1/auth/google/callback
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware
- */
-router.get('/bad', AuthComponent.bad);
 
 module.exports = router;

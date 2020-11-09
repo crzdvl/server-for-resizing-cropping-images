@@ -14,11 +14,16 @@ class AuthValidation extends Validation {
   create(data) {
     return this.Joi
       .object({
-        name: this.Joi
+        firstName: this.Joi
           .string()
           .min(1)
           .max(10)
           .required(),
+        secondName: this.Joi
+            .string()
+            .min(1)
+            .max(15)
+            .required(),
         email: this.Joi
             .string()
             .email()

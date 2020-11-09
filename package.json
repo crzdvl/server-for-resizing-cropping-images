@@ -18,6 +18,7 @@
         "cors": "2.8.5",
         "dotenv": "^8.2.0",
         "editorconfig": "0.15.3",
+        "ejs": "^3.1.5",
         "express": "4.17.1",
         "express-session": "1.17.1",
         "gm": "1.23.1",
@@ -26,6 +27,7 @@
         "mongoose": "5.10.9",
         "multer": "1.4.2",
         "passport": "^0.4.1",
+        "passport-facebook": "^3.0.0",
         "passport-google-oauth20": "^2.0.0",
         "passport-local": "^1.0.0"
     },

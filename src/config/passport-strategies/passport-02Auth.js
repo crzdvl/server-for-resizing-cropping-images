@@ -1,7 +1,6 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const AuthModel = require('../../components/Auth/model');
-const AuthService = require('../../components/Auth/service');
 
 function initialize(passport) {
     console.log('Passport-02Auth connected!');
@@ -9,32 +8,34 @@ function initialize(passport) {
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/auth/google/callback',
-        passReqToCallback: true,
-    }, (accessToken, refreshToken, profile, done) => {
+        callbackURL: 'http://localhost:3000/v1/auth/google/callback',
+    }, (accessToken, refreshToken, profile, cb) => {
             AuthModel.findOne({
                 googleId: profile.id,
             }, async (err, user) => {
-                if (err) return done(err);
+                if (err) return cb(err);
 
                 if (!user) {
-                    await AuthService.create({
-                        name: profile.displayName,
+                    await AuthModel.create({
+                        firstName: profile.name.givenName,
+                        secondName: profile.name.familyName,
                         email: profile.emails[0].value,
-                        googleId: profile.id,
+                        google: {
+                            googleId: profile.id,
+                        },
                     });
-
-                    return done(err, user);
                 }
             });
+
+            cb(null, profile);
     }));
 
-    passport.serializeUser((user, done) => {
-        done(null, user);
+    passport.serializeUser((user, cb) => {
+        cb(null, user);
     });
 
-    passport.deserializeUser((user, done) => {
-        done(null, user);
+    passport.deserializeUser((user, cb) => {
+        cb(null, user);
     });
 }
 
