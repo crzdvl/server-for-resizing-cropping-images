@@ -1,5 +1,5 @@
 const passport = require('passport');
-
+const HistoryService = require('../History/service');
 const AuthService = require('./service');
 const AuthValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
@@ -20,6 +20,7 @@ async function signup(req, res, next) {
         }
 
         await AuthService.create(req.body);
+        await HistoryService.create({ email: req.body.email, operation: 'created account' });
 
         return res.status(200).json('You signed up succesfully.');
     } catch (error) {
@@ -50,12 +51,16 @@ async function login(req, res, next) {
     try {
         return passport.authenticate('local', { email: req.body.email, password: req.body.password }, (err, user) => {
             if (err) return next(err);
+
             if (user) {
                 return req.logIn(user, (error) => {
                     if (error) return next(error);
+
+                    HistoryService.create({ email: req.user.email, operation: 'logged in account' });
                     return res.status(200).json('You logined up succesfully.');
                 });
             }
+
             if (!user) {
                 return res.status(200).json('You have not logined up.');
             }
@@ -79,7 +84,10 @@ async function login(req, res, next) {
  */
 async function logout(req, res, next) {
     try {
+        await HistoryService.create({ email: req.user.email, operation: 'logged out from account' });
+
         req.logout();
+
         return res.status(200).json('You logged out succesfully.');
     } catch (error) {
         res.status(500).json({
@@ -104,6 +112,8 @@ async function googleCallback(req, res, next) {
             if (err) {
                 return next(err);
             }
+
+            HistoryService.create({ email: req.body.email, operation: 'logged in account with google' });
 
             return res.status(200).json('You logined up succesfully with Google.');
         })(req, res, next);

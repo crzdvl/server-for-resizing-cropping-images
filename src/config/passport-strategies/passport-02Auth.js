@@ -18,7 +18,7 @@ function initialize(passport) {
                 if (!user) {
                     await AuthModel.create({
                         firstName: profile.name.givenName,
-                        secondName: profile.name.familyName,
+                        lastName: profile.name.familyName,
                         email: profile.emails[0].value,
                         google: {
                             googleId: profile.id,

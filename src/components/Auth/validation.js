@@ -19,7 +19,7 @@ class AuthValidation extends Validation {
           .min(1)
           .max(10)
           .required(),
-        secondName: this.Joi
+        lastName: this.Joi
             .string()
             .min(1)
             .max(15)

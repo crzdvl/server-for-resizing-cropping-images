@@ -1,11 +1,14 @@
 const { Schema } = require('mongoose');
 const connections = require('../../config/connection');
 
-const ImageSchema = new Schema(
+const HistorySchema = new Schema(
     {
-        image: {
+        email: {
             type: String,
             required: true,
+        },
+        image: {
+            type: String,
         },
         operation: {
             type: String,
@@ -22,4 +25,4 @@ const ImageSchema = new Schema(
     },
 );
 
-module.exports = connections.model('ImageModel', ImageSchema);
+module.exports = connections.model('HistoryModel', HistorySchema);

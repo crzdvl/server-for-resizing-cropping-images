@@ -11,23 +11,13 @@ const isAuth = require('../../polices/isAuth');
 const router = Router();
 
 /**
- * Route for resize image.
- * @name /v1/image/resize
+ * Route for view history of image operations.
+ * @name /v1/image/history
  * @function
  * @inner
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.post('/resize', isAuth.checkAuthenticated, ImageComponent.resizeImage);
-
-/**
- * Route for crop image.
- * @name /v1/image/crop
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
- */
-router.post('/crop', isAuth.checkAuthenticated, ImageComponent.cropImage);
+router.post('/history', isAuth.checkAuthenticated, ImageComponent.history);
 
 module.exports = router;

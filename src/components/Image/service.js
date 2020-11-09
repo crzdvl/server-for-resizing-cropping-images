@@ -1,30 +1,4 @@
 const gm = require('gm');
-const ImageModel = require('./model');
-
-/**
- * @method getHistory
- * @param {dateStart, dateFinish}
- * @returns {any}
- */
-function getHistory(dateStart, dateFinish) {
-    return ImageModel.find({
-        time:
-        {
-            $gte: new Date(new Date(dateStart).setHours(0, 0, 0)),
-            $lt: new Date(new Date(dateFinish).setHours(23, 59, 59)),
-        },
-    });
-}
-
-/**
- * @exports
- * @method create
- * @param {image, operation}
- * @returns {Promise<ImageModel>}
- */
-function create(image, operation) {
-    return ImageModel.create({ image, operation });
-}
 
 /**
  * @method resize
@@ -66,8 +40,6 @@ function crop(width, height, filename, path) {
 }
 
 module.exports = {
-    getHistory,
-    create,
     resize,
     crop,
 };

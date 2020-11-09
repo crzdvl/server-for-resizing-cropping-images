@@ -2,43 +2,7 @@ const ImageService = require('./service');
 const ImageValidation = require('./validation');
 const ImageError = require('../../error/ImageError');
 const ValidationError = require('../../error/ValidationError');
-
-/**
- * @function history
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
-async function history(req, res, next) {
-    try {
-        const { error } = await ImageValidation.history(req.body);
-
-        if (error) {
-            throw new ValidationError(error.details);
-        }
-
-        const { dateStart, dateFinish } = req.body;
-
-        const data = await ImageService.getHistory(dateStart, dateFinish);
-
-        return res.status(200).json(data);
-    } catch (error) {
-        if (error instanceof ValidationError) {
-            return res.status(422).json({
-                error: error.name,
-                details: error.message,
-            });
-        }
-
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
-
-        return next(error);
-    }
-}
+const HistoryService = require('../History/service');
 
 /**
  * @function resizeImage
@@ -65,7 +29,7 @@ async function resizeImage(req, res, next) {
         const { filename, path } = req.file;
 
         await ImageService.resize(width, height, filename, path);
-        await ImageService.create(filename, 'resize');
+        await HistoryService.create({ email: req.user.email, image: filename, operation: 'resize' });
 
         return res.status(200).sendFile(
             `${process.cwd()
@@ -121,7 +85,7 @@ async function cropImage(req, res, next) {
         const { filename, path } = req.file;
 
         await ImageService.crop(width, height, filename, path);
-        await ImageService.create(filename, 'crop');
+        await HistoryService.create({ email: req.user.email, image: filename, operation: 'crop' });
 
         return res.status(200).sendFile(
             `${process.cwd()
@@ -155,5 +119,4 @@ async function cropImage(req, res, next) {
 module.exports = {
     resizeImage,
     cropImage,
-    history,
 };
