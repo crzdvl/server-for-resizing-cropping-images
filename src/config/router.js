@@ -3,6 +3,7 @@ const http = require('http');
 
 const AuthRouter = require('../components/Auth/router');
 const ImageRouter = require('../components/Image/router');
+const HistoryRouter = require('../components/History/router');
 
 module.exports = {
     /**
@@ -33,6 +34,16 @@ module.exports = {
          * @param {callback} middleware - Express middleware.
          */
         app.use('/v1/image', ImageRouter);
+
+        /**
+         * Forwards any requests to the /v1/history URI to HistoryRouter.
+         * @name /v1/history
+         * @function
+         * @inner
+         * @param {string} path - Express path
+         * @param {callback} middleware - Express middleware.
+         */
+        app.use('/v1/history', HistoryRouter);
 
         /**
          * @description No results returned mean the object is not found

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const ImageComponent = require('.');
+const HistoryComponent = require('.');
 
 const isAuth = require('../../polices/isAuth');
 
@@ -18,6 +18,6 @@ const router = Router();
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.post('/history', isAuth.checkAuthenticated, ImageComponent.history);
+router.post('/', isAuth.checkAuthenticated, HistoryComponent.history);
 
 module.exports = router;
