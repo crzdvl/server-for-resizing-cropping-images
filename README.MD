@@ -38,18 +38,6 @@ Simple Node.js server for resizing or cropping images with sign up/log in.
     curl --location --request GET 'localhost:3000/v1/auth/logout' \
 ```
 
-##### sign up 
-```
-    curl --location --request POST 'localhost:3000/v1/auth/signup' \
-    --header 'Content-Type: application/json' \
-    --data-raw '{
-        "firstName": "Myrzik",
-        "lastName": "Kotiko",
-        "email": "myrzik@mailcom",
-        "password": "pass123"
-    }'
-```
-
 ##### sign up or log in with Google
 ```
     curl --location --request GET 'localhost:3000/v1/auth/google' \
