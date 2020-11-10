@@ -42,9 +42,9 @@ Simple Node.js server for resizing or cropping images with sign up/log in.
 ```
     curl --location --request GET 'localhost:3000/v1/auth/google' \
 ```
-----
-pay attention, the next routers you can use only after log in(log in with google)
-----
+
+#### pay attention, the next routers you can use only after log in(log in with google)
+
 ##### crop image 
 ```
     curl --location --request POST 'localhost:3000/v1/image/crop' \
