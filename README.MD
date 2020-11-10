@@ -7,7 +7,7 @@ Simple Node.js server for resizing or cropping images with sign up/log in.
 - saving history of operations in MongoDB
 - added API endpoint to get history of operations, ability to specify time range
 
-####CHECK OUT THE .ENV-EXAMPLE FILE! YOU NEED TO DELETE  '-example' IN THE NAME AND PUT YOUR VALUES THERE. IT WON'T WORK WITHOUT IT!
+#### CHECK OUT THE .ENV-EXAMPLE FILE! YOU NEED TO DELETE  '-example' IN THE NAME AND PUT YOUR VALUES THERE. IT WON'T WORK WITHOUT IT!
 
 ## routers
 
