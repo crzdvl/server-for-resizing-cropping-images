@@ -28,18 +28,15 @@ function initialize(passport) {
                     }, (error, userC) => done(error, userC));
                 }
 
-                console.log(user, err);
                 done(err, user);
             });
     }));
 
     passport.serializeUser((user, done) => {
-        console.log('serialize');
         done(null, user.id);
     });
 
     passport.deserializeUser((user, done) => {
-        console.log('deserialize');
         done(null, user);
     });
 }

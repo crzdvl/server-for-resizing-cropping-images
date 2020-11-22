@@ -92,14 +92,20 @@ async function logout(req, res, next) {
  */
 async function googleCallback(req, res, next) {
     try {
-        return passport.authenticate('google', (err) => {
+        return passport.authenticate('google', (err, user, info) => {
             if (err) {
                 return next(err);
             }
 
-            HistoryService.create({ email: req.body.email, operation: 'login' });
+            if (!user) return res.redirect('/v1/auth/login');
 
-            return res.status(200).json('You logined up succesfully with Google.');
+            req.logIn(user, (error) => {
+                if (error) return next(error);
+
+                HistoryService.create({ email: req.body.email, operation: 'login' });
+
+                return res.status(200).json('You logined up succesfully with Google.');
+            });
         })(req, res, next);
     } catch (error) {
         throw new SimpleError(500, error.message);
