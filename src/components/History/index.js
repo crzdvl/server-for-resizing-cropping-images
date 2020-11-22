@@ -1,6 +1,7 @@
 const HistoryService = require('./service');
 const HistoryValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
+const SimpleError = require('../../error/SimpleError');
 
 /**
  * @function history
@@ -24,17 +25,9 @@ async function history(req, res, next) {
 
         return res.status(200).json(data);
     } catch (error) {
-        if (error instanceof ValidationError) {
-            return res.status(422).json({
-                error: error.name,
-                details: error.message,
-            });
+        if (!(error instanceof ValidationError)) {
+            throw new SimpleError(500, error.message);
         }
-
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
 
         return next(error);
     }
@@ -50,6 +43,7 @@ async function history(req, res, next) {
 async function historyCsv(req, res, next) {
     try {
         const data = await HistoryService.getAllHistory();
+
         await HistoryService.create({ email: req.user.email, operation: 'history request' });
 
         const fileDate = await HistoryService.generateCsv(data);
@@ -59,19 +53,7 @@ async function historyCsv(req, res, next) {
         res.attachment(filePath);
         return res.sendStatus(200);
     } catch (error) {
-        if (error instanceof ValidationError) {
-            return res.status(422).json({
-                error: error.name,
-                details: error.message,
-            });
-        }
-
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
-
-        return next(error);
+        throw new SimpleError(500, error.message);
     }
 }
 
@@ -85,24 +67,12 @@ async function historyCsv(req, res, next) {
 async function averageStatistic(req, res, next) {
     try {
         const data = await HistoryService.getAverageStatistic();
-        console.log(data);
+
         await HistoryService.create({ email: req.user.email, operation: 'history request' });
 
         return res.status(200).json(data);
     } catch (error) {
-        if (error instanceof ValidationError) {
-            return res.status(422).json({
-                error: error.name,
-                details: error.message,
-            });
-        }
-
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
-
-        return next(error);
+        throw new SimpleError(500, error.message);
     }
 }
 
@@ -121,19 +91,7 @@ async function SumOperationsStatistic(req, res, next) {
 
         return res.status(200).json(data);
     } catch (error) {
-        if (error instanceof ValidationError) {
-            return res.status(422).json({
-                error: error.name,
-                details: error.message,
-            });
-        }
-
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
-
-        return next(error);
+        throw new SimpleError(500, error.message);
     }
 }
 
@@ -158,17 +116,9 @@ async function AvgOperationsStatistic(req, res, next) {
 
         return res.status(200).json(data);
     } catch (error) {
-        if (error instanceof ValidationError) {
-            return res.status(422).json({
-                error: error.name,
-                details: error.message,
-            });
+        if (!(error instanceof ValidationError)) {
+            throw new SimpleError(500, error.message);
         }
-
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
 
         return next(error);
     }

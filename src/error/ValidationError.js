@@ -9,6 +9,7 @@ class ValidationError extends Error {
      */
     constructor(message) {
         super();
+        this.statusCode = 500;
         this.message = message;
         this.name = 'E_MISSING_OR_INVALID_PARAMS';
     }

@@ -3,6 +3,7 @@ const HistoryService = require('../History/service');
 const AuthService = require('./service');
 const AuthValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
+const SimpleError = require('../../error/SimpleError');
 
 /**
  * @function registerPassport
@@ -24,17 +25,9 @@ async function signup(req, res, next) {
 
         return res.status(200).json('You signed up succesfully.');
     } catch (error) {
-        if (error instanceof ValidationError) {
-            return res.status(422).json({
-                message: error.name,
-                details: error.message,
-            });
+        if (!(error instanceof ValidationError)) {
+            throw new SimpleError(500, error.message);
         }
-
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
 
         return next(error);
     }
@@ -57,6 +50,7 @@ async function login(req, res, next) {
                     if (error) return next(error);
 
                     HistoryService.create({ email: req.user.email, operation: 'login' });
+
                     return res.status(200).json('You logined up succesfully.');
                 });
             }
@@ -66,12 +60,7 @@ async function login(req, res, next) {
             }
         })(req, res, next);
     } catch (error) {
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
-
-        return next(error);
+        throw new SimpleError(500, error.message);
     }
 }
 
@@ -90,12 +79,7 @@ async function logout(req, res, next) {
 
         return res.status(200).json('You logged out succesfully.');
     } catch (error) {
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
-
-        return next(error);
+        throw new SimpleError(500, error.message);
     }
 }
 
@@ -117,13 +101,8 @@ async function googleCallback(req, res, next) {
 
             return res.status(200).json('You logined up succesfully with Google.');
         })(req, res, next);
-        } catch (error) {
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
-
-        return next(error);
+    } catch (error) {
+        throw new SimpleError(500, error.message);
     }
 }
 

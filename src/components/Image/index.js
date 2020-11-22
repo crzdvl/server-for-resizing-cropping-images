@@ -2,6 +2,7 @@ const ImageService = require('./service');
 const ImageValidation = require('./validation');
 const ImageError = require('../../error/ImageError');
 const ValidationError = require('../../error/ValidationError');
+const SimpleError = require('../../error/SimpleError');
 const HistoryService = require('../History/service');
 
 /**
@@ -23,7 +24,7 @@ async function resizeImage(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        if (!req.file) throw new Error('Something went wrong, ooops.. . Try again!');
+        if (!req.file) throw new ImageError('Something went wrong, ooops.. . Try again!');
 
         const { width, height } = req.body;
         const { filename, path } = req.file;
@@ -44,24 +45,11 @@ async function resizeImage(req, res, next) {
              filename}`,
         );
     } catch (error) {
-        if (error instanceof ValidationError) {
-            return res.status(422).json({
-                error: error.name,
-                details: error.message,
-            });
+        if (!(error instanceof ValidationError)) {
+            throw new SimpleError(500, error.message);
+        } else if (!(error instanceof ImageError)) {
+            throw new SimpleError(500, error.message);
         }
-
-        if (error instanceof ImageError) {
-            return res.status(400).json({
-                error: error.name,
-                details: req.err || 'Unable to process file.',
-            });
-        }
-
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
 
         return next(error);
     }
@@ -108,24 +96,11 @@ async function cropImage(req, res, next) {
             filename}`,
         );
     } catch (error) {
-        if (error instanceof ValidationError) {
-            return res.status(422).json({
-                error: error.name,
-                details: error.message,
-            });
+        if (!(error instanceof ValidationError)) {
+            throw new SimpleError(500, error.message);
+        } else if (!(error instanceof ImageError)) {
+            throw new SimpleError(500, error.message);
         }
-
-        if (error instanceof ImageError) {
-            return res.status(400).json({
-                error: error.name,
-                details: req.err || 'Unable to process file.',
-            });
-        }
-
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
 
         return next(error);
     }

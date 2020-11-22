@@ -31,7 +31,7 @@ class HistoryValidation extends Validation {
    * @returns
    * @memberof HistoryValidation
    */
-    findByEmail(data) {
+    email(data) {
         return this.Joi
             .object({
                 email: this.Joi

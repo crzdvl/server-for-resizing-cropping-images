@@ -5,6 +5,8 @@ const AuthRouter = require('../components/Auth/router');
 const ImageRouter = require('../components/Image/router');
 const HistoryRouter = require('../components/History/router');
 
+const { handleError } = require('../error/handleError');
+
 module.exports = {
     /**
      * @function
@@ -44,6 +46,16 @@ module.exports = {
          * @param {callback} middleware - Express middleware.
          */
         app.use('/v1/history', HistoryRouter);
+
+        /**
+        * @description Error handler
+        * @function
+        * @inner
+        * @param {callback} middleware - Express middleware.
+        */
+        app.use((err, req, res, next) => {
+            handleError(err, res);
+        });
 
         /**
          * @description No results returned mean the object is not found

@@ -11,16 +11,6 @@ const isAuth = require('../../polices/isAuth');
 const router = Router();
 
 /**
- * Route for view history of image operations with a specified time.
- * @name /v1/history/
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
- */
-router.post('/', isAuth.checkAuthenticated, HistoryComponent.history);
-
-/**
  * Route for download csv history of image operations.
  * @name /v1/history/csv
  * @function
@@ -59,5 +49,15 @@ router.post('/avgUnique', isAuth.checkAuthenticated, HistoryComponent.AvgOperati
  * @param {callback} middleware - Express middleware.
  */
 router.get('/sum', isAuth.checkAuthenticated, HistoryComponent.SumOperationsStatistic);
+
+/**
+ * Route for view history of image operations with a specified time.
+ * @name /v1/history/
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+router.post('/', isAuth.checkAuthenticated, HistoryComponent.history);
 
 module.exports = router;
