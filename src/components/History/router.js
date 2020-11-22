@@ -31,7 +31,7 @@ router.post('/', isAuth.checkAuthenticated, HistoryComponent.history);
 router.get('/csv', isAuth.checkAuthenticated, HistoryComponent.historyCsv);
 
 /**
- * Route for getting average statistic of size dowloading files and params operaions.
+ * Route for getting average statistic of size dowloading files and params operations.
  * @name /v1/history/avg
  * @function
  * @inner
