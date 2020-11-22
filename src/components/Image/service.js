@@ -39,7 +39,21 @@ function crop(width, height, filename, path) {
     });
 }
 
+/**
+ * @method getFilesize
+ * @param {filename}
+ * @returns {any}
+ */
+function getFilesize(filename) {
+    return new Promise((resolve) => {
+        gm(`store/changedImages/${filename}`).filesize((err, value) => {
+            resolve(value.replace('Ki', ''));
+        });
+    });
+}
+
 module.exports = {
     resize,
     crop,
+    getFilesize,
 };

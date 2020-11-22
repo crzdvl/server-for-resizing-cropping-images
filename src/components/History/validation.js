@@ -25,6 +25,22 @@ class HistoryValidation extends Validation {
       })
       .validate(data);
   }
+
+    /**
+   * @param {String} data.id - objectId
+   * @returns
+   * @memberof HistoryValidation
+   */
+    findByEmail(data) {
+        return this.Joi
+            .object({
+                email: this.Joi
+                    .string()
+                    .email()
+                    .required(),
+            })
+            .validate(data);
+    }
 }
 
 module.exports = new HistoryValidation();

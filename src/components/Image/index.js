@@ -29,7 +29,14 @@ async function resizeImage(req, res, next) {
         const { filename, path } = req.file;
 
         await ImageService.resize(width, height, filename, path);
-        await HistoryService.create({ email: req.user.email, image: filename, operation: 'resize' });
+        const imageFileSize = await ImageService.getFilesize(filename);
+
+        await HistoryService.create({
+            email: req.user.email,
+            image: filename,
+            operation: 'resize',
+            filesize: imageFileSize,
+        });
 
         return res.status(200).sendFile(
             `${process.cwd()
@@ -69,9 +76,11 @@ async function resizeImage(req, res, next) {
  */
 async function cropImage(req, res, next) {
     try {
-        if (req.err || !req.file) {
+        if (req.err) {
             throw new ImageError(req.err);
         }
+
+        if (!req.file) throw new Error('Something went wrong, ooops.. . Try again!');
 
         const { error } = await ImageValidation.image(req.body);
 
@@ -79,18 +88,24 @@ async function cropImage(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        if (!req.file) throw new Error('Something went wrong, ooops.. . Try again!');
-
         const { width, height } = req.body;
         const { filename, path } = req.file;
 
         await ImageService.crop(width, height, filename, path);
-        await HistoryService.create({ email: req.user.email, image: filename, operation: 'crop' });
+
+        const imageFileSize = await ImageService.getFilesize(filename);
+
+        await HistoryService.create({
+            email: req.user.email,
+            image: filename,
+            operation: 'crop',
+            filesize: imageFileSize,
+        });
 
         return res.status(200).sendFile(
             `${process.cwd()
-             }/store/changedImages/${
-             filename}`,
+            }/store/changedImages/${
+            filename}`,
         );
     } catch (error) {
         if (error instanceof ValidationError) {

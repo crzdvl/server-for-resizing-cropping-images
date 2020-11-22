@@ -51,7 +51,7 @@ module.exports = {
         // cors
         app.use(session({
             secret: process.env.SECRET_CODE,
-            resave: false,
+            resave: true,
             saveUninitialized: true,
             cookie: { secure: false },
         }));

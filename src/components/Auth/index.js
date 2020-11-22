@@ -56,7 +56,7 @@ async function login(req, res, next) {
                 return req.logIn(user, (error) => {
                     if (error) return next(error);
 
-                    HistoryService.create({ email: req.user.email, operation: 'logged in account' });
+                    HistoryService.create({ email: req.user.email, operation: 'login' });
                     return res.status(200).json('You logined up succesfully.');
                 });
             }
@@ -84,7 +84,7 @@ async function login(req, res, next) {
  */
 async function logout(req, res, next) {
     try {
-        await HistoryService.create({ email: req.user.email, operation: 'logged out from account' });
+        await HistoryService.create({ email: req.user.email, operation: 'logout' });
 
         req.logout();
 
@@ -113,7 +113,7 @@ async function googleCallback(req, res, next) {
                 return next(err);
             }
 
-            HistoryService.create({ email: req.body.email, operation: 'logged in account with google' });
+            HistoryService.create({ email: req.body.email, operation: 'login' });
 
             return res.status(200).json('You logined up succesfully with Google.');
         })(req, res, next);

@@ -49,7 +49,7 @@ router.get('/logout', isAuth.checkAuthenticated, AuthComponent.logout);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/google', isAuth.checkNotAuthenticated, passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 /**
  *
@@ -59,6 +59,6 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.get('/google/callback', AuthComponent.googleCallback);
+router.get('/google/callback', isAuth.checkNotAuthenticated, AuthComponent.googleCallback);
 
 module.exports = router;

@@ -9,11 +9,13 @@ function initialize(passport) {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: 'http://localhost:3000/v1/auth/google/callback',
-    }, (accessToken, refreshToken, profile, cb) => {
+    }, (accessToken, refreshToken, profile, done) => {
             AuthModel.findOne({
-                googleId: profile.id,
+                google: {
+                    googleId: profile.id,
+                },
             }, async (err, user) => {
-                if (err) return cb(err);
+                if (err) return done(err);
 
                 if (!user) {
                     await AuthModel.create({
@@ -23,19 +25,22 @@ function initialize(passport) {
                         google: {
                             googleId: profile.id,
                         },
-                    });
+                    }, (error, userC) => done(error, userC));
                 }
-            });
 
-            cb(null, profile);
+                console.log(user, err);
+                done(err, user);
+            });
     }));
 
-    passport.serializeUser((user, cb) => {
-        cb(null, user);
+    passport.serializeUser((user, done) => {
+        console.log('serialize');
+        done(null, user.id);
     });
 
-    passport.deserializeUser((user, cb) => {
-        cb(null, user);
+    passport.deserializeUser((user, done) => {
+        console.log('deserialize');
+        done(null, user);
     });
 }
 
