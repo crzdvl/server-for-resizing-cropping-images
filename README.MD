@@ -11,6 +11,8 @@ Simple Node.js server for resizing or cropping images with sign up/log in.
 
 ## routers
 
+### Auth
+
 ##### sign up 
 ```
     curl --location --request POST 'localhost:3000/v1/auth/signup' \
@@ -45,6 +47,8 @@ Simple Node.js server for resizing or cropping images with sign up/log in.
 
 #### pay attention, the next routers you can use only after log in(log in with google)
 
+### Image
+
 ##### crop image 
 ```
     curl --location --request POST 'localhost:3000/v1/image/crop' \
@@ -67,7 +71,9 @@ Simple Node.js server for resizing or cropping images with sign up/log in.
     }'
 ```
 
-##### get history operations
+### History
+
+##### get history operations with a specified time
 ```
     curl --location --request POST 'localhost:3000/v1/history/' \
     --header 'Content-Type: application/json' \
@@ -75,6 +81,30 @@ Simple Node.js server for resizing or cropping images with sign up/log in.
         "dateStart": "2020-10-01",
         "dateFinish": "2020-10-13"
     }'
+```
+
+##### download csv history of image operations
+```
+    curl --location --request GET 'localhost:3000/v1/csv' \
+```
+
+##### get average statistic of size dowloading files and params operations
+```
+    curl --location --request GET 'localhost:3000/v1/history/avg' \
+```
+
+##### get average statistic of params operations grouped in days for one user
+```
+    curl --location --request POST 'localhost:3000/v1/history/avgUnique' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "email": "kitty@email.com",
+    }'
+```
+
+##### get sorted list of user with information about operations
+```
+    curl --location --request GET 'localhost:3000/v1/history/sum' \
 ```
 
 ### installation
