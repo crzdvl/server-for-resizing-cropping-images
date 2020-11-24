@@ -9,7 +9,19 @@ Simple Node.js server for resizing or cropping images with sign up/log in.
 
 #### CHECK OUT THE .ENV-EXAMPLE FILE! YOU NEED TO DELETE  '-example' IN THE NAME AND PUT YOUR VALUES THERE. IT WON'T WORK WITHOUT IT!
 
-## routers
+## you can start from
+
+localhost:3000/v1/page/signup
+
+localhost:3000/v1/auth/login
+
+localhost:3000/v1/auth/signup
+
+## other functionalities
+
+![functionalities](https://ibb.co/rwhNGxy)
+
+## routers backend
 
 ### Auth
 
@@ -49,25 +61,15 @@ Simple Node.js server for resizing or cropping images with sign up/log in.
 
 ### Image
 
-##### crop image 
+##### crop or resize image 
 ```
-    curl --location --request POST 'localhost:3000/v1/image/crop' \
+    curl --location --request POST 'localhost:3000/v1/image/edit' \
     --header 'Content-Type: multipart/form-data' \
     --data-raw '{
         "image": "image.png",
         "width": "100px",
         "height": "100px"
-    }'
-```
-
-##### resize image 
-```
-    curl --location --request POST 'localhost:3000/v1/image/resize' \
-    --header 'Content-Type: multipart/form-data' \
-    --data-raw '{
-        "image": "image.png",
-        "width": "100px",
-        "height": "100px"
+        "radios": "crop"
     }'
 ```
 
