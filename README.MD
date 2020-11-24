@@ -19,7 +19,7 @@ localhost:3000/v1/auth/signup
 
 ## other functionalities
 
-![functionalities](https://ibb.co/rwhNGxy)
+![functionalities](https://i.ibb.co/4VL3Z8N/Screenshot-from-2020-11-24-20-48-21.png)
 
 ## routers backend
 
