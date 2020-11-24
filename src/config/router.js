@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 
+const PageRouter = require('../components/Page/router');
 const AuthRouter = require('../components/Auth/router');
 const ImageRouter = require('../components/Image/router');
 const HistoryRouter = require('../components/History/router');
@@ -18,7 +19,17 @@ module.exports = {
         const router = express.Router();
 
         /**
-         * Forwards any requests to the /v1/image URI to ImageRouter.
+         * Forwards any requests to the /v1/page URI to PageRouter.
+         * @name /v1/auth
+         * @function
+         * @inner
+         * @param {string} path - Express path
+         * @param {callback} middleware - Express middleware.
+         */
+        app.use('/v1/page', PageRouter);
+
+        /**
+         * Forwards any requests to the /v1/auth URI to AuthRouter.
          * @name /v1/auth
          * @function
          * @inner
@@ -64,7 +75,7 @@ module.exports = {
          * @param {callback} middleware - Express middleware.
          */
         app.use((req, res) => {
-            res.status(404).send(http.STATUS_CODES[404]);
+            res.render('404.ejs');
         });
 
         /**

@@ -1,3 +1,4 @@
 /node_modules
-/store
+/src/public/store
 .env
+

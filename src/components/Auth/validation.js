@@ -33,9 +33,36 @@ class AuthValidation extends Validation {
             .min(1)
             .max(30)
             .required(),
+        _csrf: this.Joi
+              .string()
+              .required(),
       })
       .validate(data);
   }
+
+    /**
+     * @param {String} data.id - objectId
+     * @returns
+     * @memberof AuthValidation
+     */
+    login(data) {
+        return this.Joi
+            .object({
+                email: this.Joi
+                    .string()
+                    .email()
+                    .required(),
+                password: this.Joi
+                    .string()
+                    .min(1)
+                    .max(30)
+                    .required(),
+                _csrf: this.Joi
+                    .string()
+                    .required(),
+            })
+            .validate(data);
+    }
 }
 
 module.exports = new AuthValidation();

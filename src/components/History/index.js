@@ -23,7 +23,12 @@ async function history(req, res, next) {
         const data = await HistoryService.getHistory(dateStart, dateFinish);
         await HistoryService.create({ email: req.user.email, operation: 'history request' });
 
-        return res.status(200).json(data);
+        return res.render('historyByDate.ejs', {
+            csrfToken: req.csrfToken(),
+            message: 'history of image operations with a specified time',
+            name: req.user.firstName,
+            history: data,
+        });
     } catch (error) {
         if (!(error instanceof ValidationError)) {
             throw new SimpleError(500, error.message);
@@ -47,7 +52,7 @@ async function historyCsv(req, res, next) {
         await HistoryService.create({ email: req.user.email, operation: 'history request' });
 
         const fileDate = await HistoryService.generateCsv(data);
-        const filePath = `${__dirname}/../../../store/history/${fileDate}.csv`;
+        const filePath = `${__dirname}/../../store/history/${fileDate}.csv`;
 
         res.header('Content-Type', 'text/csv');
         res.attachment(filePath);
@@ -70,7 +75,11 @@ async function averageStatistic(req, res, next) {
 
         await HistoryService.create({ email: req.user.email, operation: 'history request' });
 
-        return res.status(200).json(data);
+        return res.render('history.ejs', {
+            message: 'Here is average statistic of size dowloading files and params operations.',
+            name: req.user.firstName,
+            history: data,
+        });
     } catch (error) {
         throw new SimpleError(500, error.message);
     }
@@ -89,7 +98,11 @@ async function SumOperationsStatistic(req, res, next) {
 
         await HistoryService.create({ email: req.user.email, operation: 'history request' });
 
-        return res.status(200).json(data);
+        return res.render('history.ejs', {
+            message: 'Here is sorted list of user with information about operations.',
+            name: req.user.firstName,
+            history: data,
+        });
     } catch (error) {
         throw new SimpleError(500, error.message);
     }
@@ -104,7 +117,7 @@ async function SumOperationsStatistic(req, res, next) {
  */
 async function AvgOperationsStatistic(req, res, next) {
     try {
-        const { error } = HistoryValidation.findByEmail(req.body);
+        const { error } = HistoryValidation.email(req.body);
 
         if (error) {
             throw new ValidationError(error.details);
@@ -114,7 +127,13 @@ async function AvgOperationsStatistic(req, res, next) {
 
         await HistoryService.create({ email: req.user.email, operation: 'history request' });
 
-        return res.status(200).json(data);
+        return res.render('historyByEmail.ejs', {
+            name: req.user.firstName,
+            history: data,
+            csrfToken: req.csrfToken(),
+            message: 'average statistic of params operations grouped in days for one user',
+            user: req.body.email,
+        });
     } catch (error) {
         if (!(error instanceof ValidationError)) {
             throw new SimpleError(500, error.message);

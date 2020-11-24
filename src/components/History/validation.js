@@ -22,6 +22,9 @@ class HistoryValidation extends Validation {
           .string()
           .regex(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/)
           .required(),
+        _csrf: this.Joi
+            .string()
+            .required(),
       })
       .validate(data);
   }
@@ -37,6 +40,9 @@ class HistoryValidation extends Validation {
                 email: this.Joi
                     .string()
                     .email()
+                    .required(),
+                _csrf: this.Joi
+                    .string()
                     .required(),
             })
             .validate(data);

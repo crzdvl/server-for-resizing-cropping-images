@@ -14,7 +14,7 @@ function getHistory(dateStart, dateFinish) {
             $gte: new Date(new Date(dateStart).setHours(0, 0, 0)),
             $lt: new Date(new Date(dateFinish).setHours(23, 59, 59)),
         },
-    });
+    }).lean();
 }
 
 /**
@@ -45,7 +45,7 @@ function create(data) {
 function generateCsv(data) {
     const fileDate = Date.now();
     const csvWriter = createCsvWriter({
-        path: `./store/history/${fileDate}.csv`,
+        path: `./src/public/store/history/${fileDate}.csv`,
         header: [
             { id: 'email', title: 'Email' },
             { id: 'operation', title: 'Operation' },

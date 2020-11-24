@@ -12,22 +12,12 @@ const router = Router();
 
 /**
  * Route for resize image.
- * @name /v1/image/resize
+ * @name /v1/image/edit
  * @function
  * @inner
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.post('/resize', isAuth.checkAuthenticated, ImageComponent.resizeImage);
-
-/**
- * Route for crop image.
- * @name /v1/image/crop
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
- */
-router.post('/crop', isAuth.checkAuthenticated, ImageComponent.cropImage);
+router.post('/edit', isAuth.checkAuthenticated, ImageComponent.editImage);
 
 module.exports = router;

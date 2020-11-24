@@ -9,7 +9,7 @@ function resize(width, height, filename, path) {
     return new Promise((resolve, reject) => {
         gm(path)
             .resize(width, height)
-            .write(`store/changedImages/${filename}`, (err) => {
+            .write(`src/public/store/changedImages/${filename}`, (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -20,7 +20,7 @@ function resize(width, height, filename, path) {
 }
 
 /**
- * @method resize
+ * @method crop
  * @param {width, height, filename}
  * @returns {any}
  */
@@ -29,7 +29,7 @@ function crop(width, height, filename, path) {
         gm(path)
             .gravity('Center')
             .crop(width, height)
-            .write(`store/changedImages/${filename}`, (err) => {
+            .write(`src/public/store/changedImages/${filename}`, (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -46,7 +46,7 @@ function crop(width, height, filename, path) {
  */
 function getFilesize(filename) {
     return new Promise((resolve) => {
-        gm(`store/changedImages/${filename}`).filesize((err, value) => {
+        gm(`src/public/store/changedImages/${filename}`).filesize((err, value) => {
             resolve(value.replace('Ki', ''));
         });
     });

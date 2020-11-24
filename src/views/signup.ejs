@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>ImageEditor</title>
+    <meta name="author" content="crzdvl">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
+</head>
+
+<body>
+    <div class="section">
+        <div class="container" style="width: 40%; margin-top: 5%; text-align: center;">
+            <h3>Sign Up</h3>
+            <form action="/v1/auth/signup" method="POST" style="margin: auto;">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+                <input class="u-full-width" type="text" placeholder="firstName" id="firstName" name="firstName"
+                    required>
+
+                <input class="u-full-width" type="text" placeholder="lastName" id="lastName" name="lastName" required>
+
+                <input class="u-full-width" type="email" placeholder="kotik@mailbox.com" id="email" name="email"
+                    required>
+
+                <input class="u-full-width" type="text" placeholder="password" id="password" name="password" required>
+
+                <input class="button-primary" type="submit" value="Submit">
+            </form>
+            <a class="button" href="/v1/page/login">I have an account</a>
+            <a class="button" href="/v1/auth/google">login with GOOGLE</a>
+        </div>
+    </div>
+
+</body>
+
+</html>

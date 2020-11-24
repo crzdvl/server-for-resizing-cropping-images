@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>History ImageEditor</title>
+    <meta name="author" content="crzdvl">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
+</head>
+
+<body>
+    <div class="section">
+        <div class="container" style="margin-top: 5%; text-align: center;">
+            <a class="button-redirect" href="/v1/page/menu">Menu</a>
+            <h3>Hi, <%= name %>!</h3>
+            <h5><%= message %></h5>
+            <form action="/v1/history/" method="POST" style="margin: auto; width: 40%; margin-top: 2rem;">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+                <input class="u-full-width" type="text" pattern="[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])"
+                    placeholder="2020-10-01" id="dateStart" name="dateStart" required>
+
+                <input class="u-full-width" type="text" pattern="[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])"
+                    placeholder="2020-10-01" id="dateFinish" name="dateFinish" required>
+
+                <input class="button-primary" type="submit" value="Submit">
+            </form>
+            <% if (history) { %>
+            <table class="u-full-width">
+                <thead>
+                    <tr>
+
+                        <% for (const [key, value] of Object.entries(history[0])) { %>
+                        <th><%= key %></th>
+                        <% } %>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% history.forEach((e) => { %>
+                    <tr>
+                        <% for (const [key, value] of Object.entries(e)) { %>
+                        <td><%= value %></td>
+                        <% } %>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <% } %>
+        </div>
+    </div>
+</body>
+
+</html>

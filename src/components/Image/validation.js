@@ -14,10 +14,16 @@ class ImageValidation extends Validation {
   image(data) {
     return this.Joi
       .object({
+        _csrf: this.Joi
+            .string()
+            .required(),
         width: this.Joi
           .number()
           .min(1)
           .required(),
+        radios: this.Joi
+            .string()
+            .required(),
         height: this.Joi
           .number()
           .min(1)
