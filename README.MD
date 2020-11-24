@@ -13,9 +13,9 @@ Simple Node.js server for resizing or cropping images with sign up/log in.
 
 localhost:3000/v1/page/signup
 
-localhost:3000/v1/auth/login
+localhost:3000/v1/page/login
 
-localhost:3000/v1/auth/signup
+localhost:3000/v1/auth/google
 
 ## other functionalities
 
