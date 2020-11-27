@@ -1,6 +1,8 @@
 const LocalStrategy = require('passport-local').Strategy;
 const AuthModel = require('../../components/Auth/model');
 
+const AuthService = require('../../components/Auth/service');
+
 function initialize(passport) {
     console.log('Passport-local connected!');
 
@@ -15,9 +17,12 @@ function initialize(passport) {
                     return done(null, false, { message: 'Incorrect user.' });
                 }
 
-                if (password !== user.password) {
+                const comparePassword = AuthService.comparePassword({ password }, user.password);
+
+                if (!comparePassword) {
                     return done(null, false, { message: 'Incorrect password.' });
                 }
+
                 return done(null, user);
             });
     }));

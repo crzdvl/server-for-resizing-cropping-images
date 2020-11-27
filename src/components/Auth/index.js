@@ -20,7 +20,14 @@ async function signup(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        await AuthService.create(req.body);
+        const hashedPassword = await AuthService.hashPassword(req.body);
+
+        await AuthService.create({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: hashedPassword,
+});
         await HistoryService.create({ email: req.body.email, operation: 'created account' });
 
         return res.render('login.ejs', {
