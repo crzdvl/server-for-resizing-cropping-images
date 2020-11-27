@@ -24,7 +24,7 @@ async function signup(req, res, next) {
         await HistoryService.create({ email: req.body.email, operation: 'created account' });
 
         return res.render('login.ejs', {
-            message: 'You signed up succesfully.',
+            error: 'You signed up succesfully.',
             csrfToken: req.csrfToken(),
         });
     } catch (error) {
