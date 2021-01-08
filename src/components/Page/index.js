@@ -1,21 +1,9 @@
-/**
- * @function signUp
- * @param {express.Request} req
- * @param {express.Response} res
- * @returns {Promise < void >}
- */
 function signUp(req, res) {
     return res.render('signup.ejs', {
         csrfToken: req.csrfToken(),
     });
 }
 
-/**
- * @function logIn
- * @param {express.Request} req
- * @param {express.Response} res
- * @returns {Promise < void >}
- */
 function logIn(req, res) {
     return res.render('login.ejs', {
         csrfToken: req.csrfToken(),
@@ -23,12 +11,6 @@ function logIn(req, res) {
     });
 }
 
-/**
- * @function editor
- * @param {express.Request} req
- * @param {express.Response} res
- * @returns {Promise < void >}
- */
 function editor(req, res) {
     return res.render('editor.ejs', {
         error: '',
@@ -38,12 +20,6 @@ function editor(req, res) {
     });
 }
 
-/**
- * @function history
- * @param {express.Request} req
- * @param {express.Response} res
- * @returns {Promise < void >}
- */
 function history(req, res) {
     const data = [{ CropTotal: 3, ResizeTotal: 2, SizeAvg: 5.6 }, { CropTotal: 3, ResizeTotal: 2, SizeAvg: 5.6 }];
 
@@ -52,24 +28,12 @@ function history(req, res) {
     });
 }
 
-/**
- * @function menu
- * @param {express.Request} req
- * @param {express.Response} res
- * @returns {Promise < void >}
- */
 function menu(req, res) {
     return res.render('menu.ejs', {
         name: req.user.firstName,
     });
 }
 
-/**
- * @function historyByEmail
- * @param {express.Request} req
- * @param {express.Response} res
- * @returns {Promise < void >}
- */
 function historyByEmail(req, res) {
     return res.render('historyByEmail.ejs', {
         csrfToken: req.csrfToken(),
@@ -80,18 +44,19 @@ function historyByEmail(req, res) {
     });
 }
 
-/**
- * @function historyByDate
- * @param {express.Request} req
- * @param {express.Response} res
- * @returns {Promise < void >}
- */
 function historyByDate(req, res) {
     return res.render('historyByDate.ejs', {
         csrfToken: req.csrfToken(),
         name: req.user.firstName,
         message: 'history of image operations with a specified time',
         history: '',
+        current: 0,
+        pages: 0,
+        input: {
+            dateStart: '',
+            dateFinish: '',
+            email: '',
+        },
     });
 }
 

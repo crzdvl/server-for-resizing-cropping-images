@@ -13,11 +13,7 @@ const router = Router();
 /**
  * Route for resize image.
  * @name /v1/image/edit
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
- */
+*/
 router.post('/edit', isAuth.checkAuthenticated, ImageComponent.editImage);
 
 module.exports = router;

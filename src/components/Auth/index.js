@@ -5,13 +5,6 @@ const AuthValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
 const SimpleError = require('../../error/SimpleError');
 
-/**
- * @function registerPassport
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
 async function signup(req, res, next) {
     try {
         const { error } = AuthValidation.create(req.body);
@@ -27,8 +20,8 @@ async function signup(req, res, next) {
             lastName: req.body.lastName,
             email: req.body.email,
             password: hashedPassword,
-});
-        await HistoryService.create({ email: req.body.email, operation: 'created account' });
+        });
+        await HistoryService.createcreateRecord({ email: req.body.email, operation: 'created account' });
 
         return res.render('login.ejs', {
             error: 'You signed up succesfully.',
@@ -43,13 +36,6 @@ async function signup(req, res, next) {
     }
 }
 
-/**
- * @function loginPassport
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
 async function login(req, res, next) {
     try {
         const { error } = AuthValidation.login(req.body);
@@ -62,10 +48,10 @@ async function login(req, res, next) {
             if (err) return next(err);
 
             if (user) {
-                return req.logIn(user, (err) => {
+                return req.logIn(user, () => {
                     if (error) return next(err);
 
-                    HistoryService.create({ email: req.user.email, operation: 'login' });
+                    HistoryService.createRecord({ email: req.user.email, operation: 'login' });
 
                     return res.redirect('/v1/page/menu');
                 });
@@ -87,16 +73,9 @@ async function login(req, res, next) {
     }
 }
 
-/**
- * @function logoutPassport
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
 async function logout(req, res, next) {
     try {
-        await HistoryService.create({ email: req.user.email, operation: 'logout' });
+        await HistoryService.createRecord({ email: req.user.email, operation: 'logout' });
 
         req.logout();
 
@@ -109,13 +88,6 @@ async function logout(req, res, next) {
     }
 }
 
-/**
- * @function googleCallback
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
 async function googleCallback(req, res, next) {
     try {
         return passport.authenticate('google', (err, user, info) => {
@@ -128,7 +100,7 @@ async function googleCallback(req, res, next) {
             req.logIn(user, (error) => {
                 if (error) return next(error);
 
-                HistoryService.create({ email: req.body.email, operation: 'login' });
+                HistoryService.createcreateRecord({ email: req.body.email, operation: 'login' });
 
                 return res.redirect('/v1/page/menu');
             });

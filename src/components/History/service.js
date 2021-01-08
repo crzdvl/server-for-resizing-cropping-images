@@ -1,48 +1,17 @@
-const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const _ = require('lodash');
 
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const HistoryModel = require('./model');
 
-/**
- * @method getHistory
- * @param {dateStart, dateFinish}
- * @returns {any}
- */
-function getHistory(dateStart, dateFinish) {
-    return HistoryModel.find({
-        time:
-        {
-            $gte: new Date(new Date(dateStart).setHours(0, 0, 0)),
-            $lt: new Date(new Date(dateFinish).setHours(23, 59, 59)),
-        },
-    }).lean();
-}
-
-/**
- * @method getAllHistory
- * @param {}
- * @returns {any}
- */
 function getAllHistory() {
-    return HistoryModel.find();
+    return HistoryModel.find().lean();
 }
 
-/**
- * @exports
- * @method create
- * @param { data }
- * @returns {Promise<ImageModel>}
- */
-function create(data) {
+function createRecord(data) {
     return HistoryModel.create(data);
 }
 
-/**
- * @exports
- * @method generateCsv
- * @param { data }
- * @returns {Promise<ImageModel>}
- */
-function generateCsv(data) {
+function getCsvHistory(data) {
     const fileDate = Date.now();
     const csvWriter = createCsvWriter({
         path: `./src/public/store/history/${fileDate}.csv`,
@@ -59,14 +28,49 @@ function generateCsv(data) {
     return fileDate;
 }
 
-/**
- * @method getAverageStatistic
- * @param {}
- * @returns {any}
- */
-function getAverageStatistic() {
+async function getHistoryByDateAndEmail(page, time, email) {
+    const perPage = 25;
+    let filter = {};
+    if (!_.isEmpty(time.dateStart) && !_.isEmpty(time.dateFinish)) {
+        filter = {
+            time: {
+                $gte: new Date(new Date(time.dateStart).setHours(0, 0, 0)),
+                $lt: new Date(new Date(time.dateFinish).setHours(23, 59, 59)),
+            },
+        };
+    }
+    if (!_.isEmpty(email)) {
+        filter = {
+            email,
+        };
+    }
+
+    const history = await HistoryModel
+        .find(filter)
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .lean();
+
+    const count = await HistoryModel.countDocuments(filter);
+    const pages = Math.ceil(count / perPage);
+
+    return {
+        history,
+        pages,
+    };
+}
+
+function getAverageStatisticOfFileSize() {
     return HistoryModel.aggregate(
         [
+            {
+                $project: {
+                    time: 0,
+                    image: 0,
+                    email: 0,
+                    _id: 0,
+                },
+            },
             {
                 $facet: {
                     CropTotal: [
@@ -106,11 +110,6 @@ function getAverageStatistic() {
     );
 }
 
-/**
- * @method getSumOperationsStatistic
- * @param {}
- * @returns {any}
- */
 function getSumOperationsStatistic() {
     return HistoryModel.aggregate(
         [
@@ -158,21 +157,22 @@ function getSumOperationsStatistic() {
     );
 }
 
-/**
- * @method getAvgOperationsStatistic
- * @param {}
- * @returns {any}
- */
-function getAvgOperationsStatistic(email) {
+function getAvgOperationsStatisticByDayByEmail(email) {
     return HistoryModel.aggregate(
         [
+            {
+                $project: {
+                    image: 0,
+                    filesize: 0,
+                },
+            },
             {
                 $match: { email },
             },
             {
                 $project: {
                     time: 1,
-                    email: 1,
+                    operation: 1,
                     crop: {
                         $cond: {
                             if: {
@@ -205,11 +205,11 @@ function getAvgOperationsStatistic(email) {
 }
 
 module.exports = {
-    getHistory,
-    create,
-    generateCsv,
+    createRecord,
+    getCsvHistory,
     getAllHistory,
-    getAverageStatistic,
+    getAverageStatisticOfFileSize,
     getSumOperationsStatistic,
-    getAvgOperationsStatistic,
+    getAvgOperationsStatisticByDayByEmail,
+    getHistoryByDateAndEmail,
 };

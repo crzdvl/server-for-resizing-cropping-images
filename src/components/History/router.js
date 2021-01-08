@@ -13,51 +13,31 @@ const router = Router();
 /**
  * Route for download csv history of image operations.
  * @name /v1/history/csv
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
  */
 router.get('/csv', isAuth.checkAuthenticated, HistoryComponent.historyCsv);
 
 /**
+ * Route for view history of image operations with a specified time.
+ * @name /v1/history/
+ */
+router.get('/:page', isAuth.checkAuthenticated, HistoryComponent.historyByDateAndEmail);
+
+/**
  * Route for getting average statistic of size dowloading files and params operations.
  * @name /v1/history/avg
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
  */
-router.get('/avg', isAuth.checkAuthenticated, HistoryComponent.averageStatistic);
+router.get('/avg', isAuth.checkAuthenticated, HistoryComponent.averageStatisticOfFileSize);
 
 /**
  * Route for getting average statistic of params operations grouped in days.
  * @name /v1/history/avgUnique
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
  */
-router.post('/avgUnique', isAuth.checkAuthenticated, HistoryComponent.AvgOperationsStatistic);
+router.post('/avgUnique', isAuth.checkAuthenticated, HistoryComponent.avgOperationsStatisticByDayByEmail);
 
 /**
  * Route for getting sorted list of user with information about operations.
  * @name /v1/history/sum
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
  */
-router.get('/sum', isAuth.checkAuthenticated, HistoryComponent.SumOperationsStatistic);
-
-/**
- * Route for view history of image operations with a specified time.
- * @name /v1/history/
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
- */
-router.post('/', isAuth.checkAuthenticated, HistoryComponent.history);
+router.get('/sum', isAuth.checkAuthenticated, HistoryComponent.sumOperationsStatistic);
 
 module.exports = router;

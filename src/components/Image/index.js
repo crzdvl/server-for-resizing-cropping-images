@@ -5,13 +5,6 @@ const ValidationError = require('../../error/ValidationError');
 const SimpleError = require('../../error/SimpleError');
 const HistoryService = require('../History/service');
 
-/**
- * @function editImage
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
 async function editImage(req, res, next) {
     try {
         if (req.err || !req.file) {
@@ -32,7 +25,7 @@ async function editImage(req, res, next) {
 
             const imageFileSize = await ImageService.getFilesize(filename);
 
-            await HistoryService.create({
+            await HistoryService.createRecord({
                 email: req.user.email,
                 image: filename,
                 operation: 'crop',
@@ -44,7 +37,7 @@ async function editImage(req, res, next) {
             await ImageService.resize(width, height, filename, path);
             const imageFileSize = await ImageService.getFilesize(filename);
 
-            await HistoryService.create({
+            await HistoryService.createRecord({
                 email: req.user.email,
                 image: filename,
                 operation: 'resize',

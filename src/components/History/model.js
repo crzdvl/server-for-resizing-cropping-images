@@ -26,5 +26,6 @@ const HistorySchema = new Schema(
         versionKey: false,
     },
 );
+// HistorySchema.index({ operation: 1 });
 
 module.exports = connections.model('HistoryModel', HistorySchema);

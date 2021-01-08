@@ -1,10 +1,5 @@
 const gm = require('gm');
 
-/**
- * @method resize
- * @param {width, height, filename}
- * @returns {any}
- */
 function resize(width, height, filename, path) {
     return new Promise((resolve, reject) => {
         gm(path)

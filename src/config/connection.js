@@ -7,6 +7,7 @@ const MONGO_URI = `${MONGODB_URI}${MONGODB_DB_MAIN}`;
 const connectOptions = {
     // flag to allow users to fall back to the old
     // parser if they find a bug in the new parse
+    useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
 };

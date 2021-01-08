@@ -1,59 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <title>History By Date</title>
     <meta name="author" content="crzdvl">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/skeleton.css">
     <link rel="icon" type="image/png" href="images/favicon.png">
-
 </head>
-
 <body>
     <div class="section">
         <div class="container" style="margin-top: 5%; text-align: center;">
             <a class="button-redirect" href="/v1/page/menu">Menu</a>
             <h3>Hi, <%= name %>!</h3>
             <h5><%= message %></h5>
-            <form action="/v1/history/" method="POST" style="margin: auto; width: 40%; margin-top: 2rem;">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <form action="/v1/history/1" method="GET" style="margin: auto; width: 40%; margin-top: 2rem;">
+                <input  type="hidden" 
+                        name="_csrf" 
+                        value="<%= csrfToken %>">
 
-                <input class="u-full-width" type="text" pattern="[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])"
-                    placeholder="2020-10-01" id="dateStart" name="dateStart" required>
+                <input  class="u-full-width" 
+                        type="text" 
+                        pattern="[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])"
+                        placeholder="2020-10-01" 
+                        id="dateStart" 
+                        name="dateStart" 
+                        value="<%= input.dateStart %>">
 
-                <input class="u-full-width" type="text" pattern="[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])"
-                    placeholder="2020-10-01" id="dateFinish" name="dateFinish" required>
+                <input  class="u-full-width" 
+                        type="text" 
+                        pattern="[12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])"
+                        placeholder="2020-10-01" 
+                        id="dateFinish" 
+                        name="dateFinish" 
+                        value="<%= input.dateFinish %>">
+
+                <input  class="u-full-width"
+                        type="email" 
+                        placeholder="kotik@mailbox.com" 
+                        id="email" 
+                        name="email" 
+                        value="<%= input.email %>">
+
 
                 <input class="button-primary" type="submit" value="Submit">
             </form>
-            <% if (history.length) { %>
-            <table class="u-full-width">
-                <thead>
-                    <tr>
 
-                        <% for (const [key, value] of Object.entries(history[0])) { %>
-                        <th><%= key %></th>
+            <% if (history.length) { %>
+                <table class="u-full-width">
+                    <thead>
+                        <tr>
+                            <% for (const [key, value] of Object.entries(history[0])) { %>
+                            <th><%= key %></th>
+                            <% } %>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% history.forEach((e) => { %>
+                        <tr>
+                            <% for (const [key, value] of Object.entries(e)) { %>
+                            <td><%= value %></td>
+                            <% } %>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            <% } %>
+            <% if (pages > 0) { %>
+                <ul class="pagination text-center">
+                    <% if (current == 1) { %>
+                        <li class="disabled">
+                            <a>
+                                First
+                            </a>
+                        </li>
+                    <% } else { %>
+                        <li>
+                            <a href="/v1/history/1">
+                                First
+                            </a>
+                        </li>
+                    <% } %>
+                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                    <% if (i !== 1) { %>
+                        <li class="disabled">
+                            <a>
+                                ...
+                            </a>
+                        </li>
+                    <% } %>
+                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                        <% if (i == current) { %>
+                            <li class="active">
+                                <a>
+                                    <%= i %>
+                                </a>
+                            </li>
+                        <% } else { %>
+                            <li>
+                                <a href="/v1/history/<%= i %>?_csrf=<%= csrfToken %>&dateStart=<%= input.dateStart %>&dateFinish=<%= input.dateFinish %>&email=<%= input.email %>">
+                                    <%= i %>
+                                </a>
+                            </li>
                         <% } %>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% history.forEach((e) => { %>
-                    <tr>
-                        <% for (const [key, value] of Object.entries(e)) { %>
-                        <td><%= value %></td>
+                        <% if (i == Number(current) + 4 && i < pages) { %>
+                            <li class="disabled">
+                                <a>
+                                    ...
+                                </a>
+                            </li>
                         <% } %>
-                    </tr>
-                    <% }) %>
-                </tbody>
-            </table>
+                    <% } %>
+                    <% if (current == pages) { %>
+                        <li class="disabled">
+                            <a>
+                                Last
+                            </a>
+                        </li>
+                    <% } else { %>
+                        <li>
+                            <a href="/v1/history/<%= pages %>">
+                                Last
+                            </a>
+                        </li>
+                    <% } %>
+                </ul>
             <% } %>
         </div>
     </div>
 </body>
-
 </html>
