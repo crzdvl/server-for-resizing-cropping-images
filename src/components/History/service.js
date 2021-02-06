@@ -110,9 +110,17 @@ function getAverageStatisticOfFileSize() {
     );
 }
 
-function getSumOperationsStatistic() {
-    return HistoryModel.aggregate(
+async function getSumOperationsStatistic(page) {
+    const perPage = 100;
+
+    const history = await HistoryModel.aggregate(
         [
+            {
+                $skip: (perPage * page) - perPage,
+            },
+            {
+                $limit: perPage,
+            },
             {
                 $project: {
                     email: 1,
@@ -155,9 +163,28 @@ function getSumOperationsStatistic() {
             },
         ],
     );
+
+    const allUsers = await HistoryModel.aggregate([
+        {
+            $group: {
+                _id: '$email',
+                count: {
+                    $sum: 1,
+                },
+            },
+        },
+    ]);
+    const allUsersCounted = _.size(allUsers);
+
+    const pages = Math.ceil(allUsersCounted / perPage);
+
+    return {
+        history,
+        pages,
+    };
 }
 
-function getAvgOperationsStatisticByDayByEmail(email) {
+async function getAvgOperationsStatisticByDayByEmail(email) {
     return HistoryModel.aggregate(
         [
             {

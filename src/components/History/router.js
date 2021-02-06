@@ -17,10 +17,10 @@ const router = Router();
 router.get('/csv', isAuth.checkAuthenticated, HistoryComponent.historyCsv);
 
 /**
- * Route for view history of image operations with a specified time.
- * @name /v1/history/
+ * Route for getting sorted list of user with information about operations.
+ * @name /v1/history/sum
  */
-router.get('/:page', isAuth.checkAuthenticated, HistoryComponent.historyByDateAndEmail);
+router.get('/sum/:page', isAuth.checkAuthenticated, HistoryComponent.sumOperationsStatistic);
 
 /**
  * Route for getting average statistic of size dowloading files and params operations.
@@ -29,15 +29,14 @@ router.get('/:page', isAuth.checkAuthenticated, HistoryComponent.historyByDateAn
 router.get('/avg', isAuth.checkAuthenticated, HistoryComponent.averageStatisticOfFileSize);
 
 /**
+ * Route for view history of image operations with a specified time.
+ * @name /v1/history/
+ */
+router.get('/:page', isAuth.checkAuthenticated, HistoryComponent.historyByDateAndEmail);
+
+/**
  * Route for getting average statistic of params operations grouped in days.
  * @name /v1/history/avgUnique
  */
 router.post('/avgUnique', isAuth.checkAuthenticated, HistoryComponent.avgOperationsStatisticByDayByEmail);
-
-/**
- * Route for getting sorted list of user with information about operations.
- * @name /v1/history/sum
- */
-router.get('/sum', isAuth.checkAuthenticated, HistoryComponent.sumOperationsStatistic);
-
 module.exports = router;

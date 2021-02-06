@@ -4,7 +4,7 @@
     "description": "Node.js server for resizing or cropping images, which also store operations history.",
     "main": "./src/server/index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "mocha --timeout 3000 ./__test__/index",
         "start": "node ./src/server/index.js"
     },
     "author": "Viktoria Grechukha",
@@ -24,7 +24,6 @@
         "ejs": "^3.1.5",
         "express": "4.17.1",
         "express-session": "1.17.1",
-        "faker": "^5.1.0",
         "gm": "1.23.1",
         "helmet": "4.1.1",
         "jsonwebtoken": "8.5.1",
@@ -38,10 +37,13 @@
         "skeleton": "^0.1.2"
     },
     "devDependencies": {
+        "chai": "^4.2.0",
+        "chai-fs": "^2.0.0",
         "cz-conventional-changelog": "3.3.0",
         "eslint": "^7.11.0",
         "eslint-config-airbnb-base": "^14.2.0",
-        "eslint-plugin-import": "^2.22.1"
+        "eslint-plugin-import": "^2.22.1",
+        "faker": "^5.2.0"
     },
     "config": {
         "commitizen": {

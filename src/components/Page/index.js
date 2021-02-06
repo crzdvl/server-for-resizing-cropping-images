@@ -25,6 +25,8 @@ function history(req, res) {
 
     return res.render('history.ejs', {
         history: data,
+        current: 0,
+        pages: 0,
     });
 }
 

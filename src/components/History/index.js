@@ -5,7 +5,6 @@ const SimpleError = require('../../error/SimpleError');
 
 async function historyCsv(req, res, next) {
     try {
-        const startTime = new Date();
         const data = await HistoryService.getAllHistory();
 
         await HistoryService.createRecord({ email: req.user.email, operation: 'history request' });
@@ -23,6 +22,7 @@ async function historyCsv(req, res, next) {
 
 async function historyByDateAndEmail(req, res, next) {
     try {
+        console.log('historyByDateAndEmail');
         const page = req.params.page || 1;
         let data = [];
 
@@ -60,6 +60,7 @@ async function historyByDateAndEmail(req, res, next) {
 async function averageStatisticOfFileSize(req, res, next) {
     try {
         const data = await HistoryService.getAverageStatisticOfFileSize();
+        console.log('file');
 
         await HistoryService.createRecord({ email: req.user.email, operation: 'history request' });
 
@@ -67,6 +68,9 @@ async function averageStatisticOfFileSize(req, res, next) {
             message: 'Here is average statistic of size dowloading files and params operations.',
             name: req.user.firstName,
             history: data,
+            current: 1,
+            pages: 1,
+            pathOfUrl: '',
         });
     } catch (error) {
         throw new SimpleError(500, error.message);
@@ -75,14 +79,19 @@ async function averageStatisticOfFileSize(req, res, next) {
 
 async function sumOperationsStatistic(req, res, next) {
     try {
-        const data = await HistoryService.getSumOperationsStatistic();
+        const page = req.params.page || 1;
+
+        const data = await HistoryService.getSumOperationsStatistic(page);
 
         await HistoryService.createRecord({ email: req.user.email, operation: 'history request' });
 
         return res.render('history.ejs', {
             message: 'Here is sorted list of user with information about operations.',
             name: req.user.firstName,
-            history: data,
+            history: data.history,
+            current: page,
+            pages: data.pages,
+            pathOfUrl: 'sum',
         });
     } catch (error) {
         throw new SimpleError(500, error.message);

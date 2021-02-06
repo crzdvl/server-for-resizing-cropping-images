@@ -8,6 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/skeleton.css">
     <link rel="icon" type="image/png" href="images/favicon.png">
@@ -39,6 +40,66 @@
                     <% }) %>
                 </tbody>
             </table>
+            <% if (pages > 0) { %>
+                <ul class="pagination text-center">
+                    <% if (current == 1) { %>
+                        <li class="disabled">
+                            <a>
+                                First
+                            </a>
+                        </li>
+                    <% } else { %>
+                        <li>
+                            <a href="/v1/history/<%= pathOfUrl %>/1">
+                                First
+                            </a>
+                        </li>
+                    <% } %>
+                    <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                    <% if (i !== 1) { %>
+                        <li class="disabled">
+                            <a>
+                                ...
+                            </a>
+                        </li>
+                    <% } %>
+                    <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                        <% if (i == current) { %>
+                            <li class="active">
+                                <a>
+                                    <%= i %>
+                                </a>
+                            </li>
+                        <% } else { %>
+                            <li>
+                                <a href="/v1/history/<%= pathOfUrl %>/<%= i %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                        <% } %>
+                        <% if (i == Number(current) + 4 && i < pages) { %>
+                            <li class="disabled">
+                                <a>
+                                    ...
+                                </a>
+                            </li>
+                        <% } %>
+                    <% } %>
+                    <% if (current == pages) { %>
+                        <li class="disabled">
+                            <a>
+                                Last
+                            </a>
+                        </li>
+                    <% } else { %>
+                        <li>
+                            <a href="/v1/history/<%= pathOfUrl %>/<%= pages %>">
+                                Last
+                            </a>
+                        </li>
+                    <% } %>
+                </ul>
+            <% } %>
         </div>
     </div>
 </body>

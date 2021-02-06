@@ -21,7 +21,7 @@ async function signup(req, res, next) {
             email: req.body.email,
             password: hashedPassword,
         });
-        await HistoryService.createcreateRecord({ email: req.body.email, operation: 'created account' });
+        await HistoryService.createRecord({ email: req.body.email, operation: 'created account' });
 
         return res.render('login.ejs', {
             error: 'You signed up succesfully.',
@@ -100,7 +100,7 @@ async function googleCallback(req, res, next) {
             req.logIn(user, (error) => {
                 if (error) return next(error);
 
-                HistoryService.createcreateRecord({ email: req.body.email, operation: 'login' });
+                HistoryService.createRecord({ email: req.body.email, operation: 'login' });
 
                 return res.redirect('/v1/page/menu');
             });
